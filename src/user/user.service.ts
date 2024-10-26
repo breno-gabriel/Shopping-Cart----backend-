@@ -41,11 +41,14 @@ export class UserService {
   }
 
   async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
+
+    const date = new Date()
+
     return await this.prismaService.user.update({
       where: {
         id
       }, 
-      data: updateUserDto
+      data: {...updateUserDto, updatedAt: date.toISOString()}
     });
   }
 
