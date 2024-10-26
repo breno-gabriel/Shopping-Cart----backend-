@@ -9,23 +9,35 @@ export class UserService {
 
   constructor (private prismaService : PrismaService) {}
 
-  async create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto){
 
-    const date = new Date(); 
-
-    return this.prismaService.user.create({
+    return await this.prismaService.user.create({
 
         data: createUserDto
 
     });
   }
 
-  findAll() {
-    return `This action returns all user`;
+  async findAll() {
+    return await this.prismaService.user.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: number) {
+    return await this.prismaService.user.findUnique({
+      where: {
+        id 
+      }
+    });
+  }
+
+  async findByEMail (email: string) {
+
+    return await this.prismaService.user.findUnique({
+      where: {
+        email 
+      }
+    });
+
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
