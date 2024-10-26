@@ -6,8 +6,6 @@ export class User {
     name: string      
     email: string     
     password: string  
-    role: Roles     
-    createdAt: Date
-    updatedAt: Date 
+    role: string      
 
 }
