@@ -1,10 +1,18 @@
+import { IsEmail, IsString } from "class-validator"
 import { Roles } from "../enumerators/roles.enumerator"
 
 export class CreateUserDto {
 
-    name: string      
-    email: string     
-    password: string  
+    @IsString()
+    name: string  
+    
+    @IsEmail()
+    email: string   
+    
+    @IsString()
+    password: string 
+    
+    @IsString()
     role: string    
     
 
