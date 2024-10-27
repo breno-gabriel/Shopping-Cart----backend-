@@ -1,4 +1,4 @@
-import { Injectable, UseGuards } from '@nestjs/common';
+import { Injectable, NotFoundException, UseGuards } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/database/prisma.service';
@@ -26,9 +26,13 @@ export class UserService {
 
   @UseGuards(AuthGuard)
   async findOne(id: number) : Promise<User> {
+
     return await this.prismaService.user.findUnique({
       where: {
         id 
+      },
+      include: {
+        products: true
       }
     });
   }
@@ -47,22 +51,36 @@ export class UserService {
   @UseGuards(AuthGuard)
   async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
 
-    const date = new Date()
 
-    return await this.prismaService.user.update({
-      where: {
-        id
-      }, 
-      data: {...updateUserDto, updatedAt: date.toISOString()}
-    });
+    try {
+      const date = new Date()
+
+      return await this.prismaService.user.update({
+        where: {
+          id
+        }, 
+        data: {...updateUserDto, updatedAt: date.toISOString()}
+      });
+    }catch (err) {
+      throw new NotFoundException("User don't exist")
+    }
   }
+  
+
+
 
   @UseGuards(AuthGuard)
   async remove(id: number): Promise<User> {
-    return await this.prismaService.user.delete({
-      where: {
-        id
-      }
-    })
+
+    try {
+      return await this.prismaService.user.delete({
+        where: {
+          id
+        }
+      })
+    }catch (err) {
+      throw new NotFoundException("User don't exist")
+    }
+
   }
 }

@@ -1,8 +1,17 @@
+import { IsInt, IsNumber, IsString } from "class-validator"
+
 export class CreateProductDto {
 
+    @IsString()
     name: string 
-    description: string 
+
+    @IsString()
+    description: string
+    
+    @IsNumber()
     price: number
+
+    @IsInt()
     sellerId: number  
     
 
