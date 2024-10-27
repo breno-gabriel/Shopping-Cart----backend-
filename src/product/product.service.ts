@@ -10,10 +10,10 @@ export class ProductService {
   constructor (private prismaService: PrismaService) {}
 
   
-  async create(createProductDto: CreateProductDto): Promise<Product> {
+  async create(createProductDto: CreateProductDto, sellerId: number): Promise<Product> {
 
     return await this.prismaService.product.create({
-      data: createProductDto
+      data: {sellerId: sellerId, ...createProductDto}
     });
   }
 
